@@ -1,0 +1,40 @@
+<h1>Inventory Management</h1>
+<h4>Here is a list of everything you've got in inventory. To add or subtract items, simply modify the number listed in the 'On Hand' column.</h4>
+<hr><br>
+
+<% form_tag :controller => 'inventory', :action => 'update'  do %>
+	<% for product in @inventory %>
+	<h3><%= product.name %></h3>
+	<table class="index">
+	  <thead>
+	    <tr>
+				 <th width="100">SKU</th>
+					<th width="150">Variant</th>
+					<th width="200">On Hand</th>
+				</tr>
+			</thead>
+			<tbody>
+		<% for variant in product.variants %>
+		  <% if variant.deleted_at.nil? and !variant.option_values.empty? %>
+		    <tr>
+					<td width="100"><%= text_field_tag "variant_skus[#{variant.id}[]", variant.sku %></td>
+					<td width="150"><%= variant_options_ybp variant %></td>
+					<td width="200"><%= text_field_tag "variants[#{variant.id}][]", variant.on_hand, :size => 3 %></td>
+				
+			<% end %>
+		<% end %>
+			</tr>
+			</tbody>
+			<br>
+		</table>
+		<br />
+	<% end %>
+
+	<%= submit_tag 'Update Inventory' %>
+	
+<% end %>
+
+
+
+
+
